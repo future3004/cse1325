@@ -1,3 +1,6 @@
 #include <iostream>
-int main() {std::cout << "Hello, Richard Kalibbala\n";}
+using namespace std;
+int main() {
+ cout << "Hello, Richard Kalibbala\n";
+}
 
