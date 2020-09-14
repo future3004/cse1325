@@ -12,7 +12,7 @@ class Board{
         std::string to_string();
     private:
         int tiles;
-        static std::vector<Tile> _tiles;
+        std::vector<Tile> _tiles;
 
 };
 
