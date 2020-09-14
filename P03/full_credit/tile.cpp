@@ -1,26 +1,36 @@
 #include "tile.h"
+#include <string>
+#include <iostream>
 
-int Tile::_width = 0;
+int Tile::_width = -1;
 
 std::string Tile::_blank = "";
 
 // contructor 
-Tile::Tile(std::string word): _word{word}{}
+Tile::Tile(std::string word): _word{word}{
+	_matched = false;
+	if (word.length() > _width) { 
+	 _width = word.length(); 
+	 for(int i = 1; i <= _width; i++){ _blank = _blank + "-";}
+	 //_blank = "-" * _width;
+	
+	};
+}
 
 bool Tile::match(Tile& tile){
-	return true;
+    if(_word == tile._word){ _matched = true; tile._matched = true;}
+	return _matched;
 }
 
-std::string Tile::word(){
-	return "Apples";
-}
+std::string Tile::word(){ return _word; }
 
-bool Tile::matched(){
-	return false;
-}
+bool Tile::matched(){ return _matched; }
 
 std::string Tile::to_string(){
-	return _word;
+    if(_matched) return _word;
+	return _blank;
 }
 
 int Tile::width(){return _width;}
+
+
