@@ -9,7 +9,7 @@ class Board{
         Board(int tiles);
         std::string attempt(int tile1, int tile2);
         bool solved();
-        std::string to_string();
+        void to_string();
     private:
         int tiles;
         std::vector<Tile> _tiles;
