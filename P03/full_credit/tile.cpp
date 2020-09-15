@@ -4,14 +4,14 @@
 
 int Tile::_width = -1;
 
-std::string Tile::_blank = "";
+std::string Tile::_blank;
 
 // contructor 
-Tile::Tile(std::string word): _word{word}{_matched = false; 
-    if (word.length() > _width) { 
-    _width = word.length(); 
-    for(int i = 1; i <= _width; i++){ _blank = _blank + "-";}
-    }
+Tile::Tile(std::string word): _word{word}, _matched{false}{
+    if (_width < (int)_word.size()) { 
+    _width = _word.size(); 
+    _blank = std::string(_width, '-');
+  }
 }
 
 bool Tile::match(Tile& tile){
