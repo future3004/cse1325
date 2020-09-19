@@ -14,4 +14,6 @@ int main() {
         std::cout << hours << ':' << std::setw(2) << std::setfill('0') << minutes << ", ";
     }
     std::cout << std::endl;
+   //Modulo minutes{60, 15}; 
+   //std::cout << minutes;
 }
