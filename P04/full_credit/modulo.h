@@ -21,7 +21,7 @@ class Modulo{
   inline bool operator<=(int rhs) {return (compare(rhs) <= 0); }
   inline bool operator>(int rhs) {return (compare(rhs) > 0); }
   inline bool operator>=(int rhs) {return (compare(rhs) >= 0); }
-  friend std::ostream& operator<<(std::ostream& ost, Modulo& m);
+  friend std::ostream& operator<<(std::ostream& ost, const Modulo& m);
   friend std::ostream& operator>>(std::ostream& ost, Modulo& m);
  private:
   int _value;
