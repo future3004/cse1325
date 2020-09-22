@@ -8,7 +8,7 @@ class Modulo{
   Modulo(int modulo, int value, int offset);
   Modulo();
   Modulo(int modulo, int value);
-  
+  Modulo(int modulo);
   void set_nmsd(Modulo* nmsd);
   int value();
   Modulo& operator+=(int rhs);
