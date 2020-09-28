@@ -3,10 +3,11 @@
 
 #include "gate.h"
 
-class And{
+class And : virtual public Gate{
   public:
     And();
-    Signal output();
+    //virtual Signal output() override;
+    virtual void output() override;
 };
 
 #endif

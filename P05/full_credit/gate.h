@@ -3,13 +3,17 @@
 
 #include <iostream>
 
+enum Pin{FIRST=1, SECOND};
+enum Signal{OFF=100, ON};
+
 class Gate{
   public:
     Gate();
     void connect(Gate& gate, Pin input_pin);
     void input(Pin pin, Signal signal);
     Signal input(Pin pin);
-    Signal output();
+    //virtual Signal output() = 0;
+    virtual void output() = 0;
   private:
     Signal _input1;
     Signal _input2;
