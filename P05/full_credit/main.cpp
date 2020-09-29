@@ -5,14 +5,13 @@
 
 int main(){
  enum Signal s1, s2;
- //And a;
- //Or o1;
+ And a;
+ Or o1;
   
- //s1 = a.output();
- //s2 = o1.output();
- s1 = OFF;
+ s1 = a.output();
+ s2 = o1.output();
+ 
  std::cout << "s1 = " << s1 << std::endl;
-
 
   return 0;
 }

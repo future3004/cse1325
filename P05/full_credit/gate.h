@@ -14,7 +14,7 @@ class Gate{
     Signal input(Pin pin);
     virtual Signal output() = 0;
     //virtual void output() = 0;
-  private:
+  protected:
     Signal _input1;
     Signal _input2;
     Gate* _to_gate;
