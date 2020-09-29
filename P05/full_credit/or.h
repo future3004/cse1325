@@ -6,7 +6,7 @@
 class Or : public Gate{
   public:
     //Or();
-    virtual Signal output() override;
+    Signal output() override;
 };
 
 #endif

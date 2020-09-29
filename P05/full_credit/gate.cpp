@@ -10,14 +10,14 @@ void Gate::connect(Gate& gate, Pin input_pin){
 }
 
 Signal Gate::input(Pin pin){
-  return pin == FIRST ? _input1 : _input2;
+  return (pin == 1) ? _input1 : _input2;
 }
 
 void Gate::input(Pin pin, Signal signal){
-  if(pin == FIRST){_input1 = signal;}
+  if(pin == 1){_input1 = signal;}
   else{_input2 = signal;}
   
-  if(_to_gate  != nullptr){
-    _to_gate-> input(_to_pin, signal);
+  if(_to_gate){
+    _to_gate-> input(_to_pin, output());
   }
 }

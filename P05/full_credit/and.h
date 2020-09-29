@@ -6,7 +6,7 @@
 class And : public Gate {
   public:
     //And();
-    virtual Signal output() override;
+    Signal output() override;
 };
 
 #endif
