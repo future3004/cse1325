@@ -3,11 +3,10 @@
 
 #include "gate.h"
 
-class Or : virtual public Gate{
+class Or : public Gate{
   public:
-    Or();
-    //virtual Signal output() override;
-    virtual void output() override;
+    //Or();
+    virtual Signal output() override;
 };
 
 #endif

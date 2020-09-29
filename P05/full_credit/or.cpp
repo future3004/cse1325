@@ -1,11 +1,11 @@
 #include "or.h"
+#include "gate.h"
 #include <iostream>
 
-//enum Signal{OFF, ON};
+enum Signal sO;
 
-Or::Or(){}
-
-void Or::output() {
+Signal Or::output() {
   std::cout << "Output method = Or" << "\n" <<std::endl;
-  //return 1;
+  sO = OFF;
+  return sO;
 }

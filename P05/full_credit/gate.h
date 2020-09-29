@@ -3,8 +3,8 @@
 
 #include <iostream>
 
-enum Pin{FIRST=1, SECOND};
-enum Signal{OFF=100, ON};
+enum Pin{FIRST = 1, SECOND = 2};
+enum Signal{OFF = 0, ON = 1};
 
 class Gate{
   public:
@@ -12,8 +12,8 @@ class Gate{
     void connect(Gate& gate, Pin input_pin);
     void input(Pin pin, Signal signal);
     Signal input(Pin pin);
-    //virtual Signal output() = 0;
-    virtual void output() = 0;
+    virtual Signal output() = 0;
+    //virtual void output() = 0;
   private:
     Signal _input1;
     Signal _input2;

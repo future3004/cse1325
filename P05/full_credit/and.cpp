@@ -1,12 +1,11 @@
 #include "and.h"
+#include "gate.h"
 #include <iostream>
 
-//enum Signal{OFF, ON};
+enum Signal sA;
 
-And::And(){}
-//And::And(){}
-
-void And::output() {
+Signal And::output() {
    std::cout << "Output method = And" << "\n" << std::endl;
-  //return 1;
+   sA = ON;
+  return sA;
 }
