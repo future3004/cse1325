@@ -9,10 +9,8 @@ class Mainwin : public Gtk::Window {
     Mainwin();
     virtual ~Mainwin();
   protected:
-    //void on_button_click();  // delete
-    
     // observable call backs
-    void on_new_store_click();
+    void on_new_store_click(); // implement later
     void on_new_tool_click();
     void on_new_plant_click();
     void on_new_mulch_click();
@@ -20,7 +18,8 @@ class Mainwin : public Gtk::Window {
     void on_quit_click();
     
   private:
-    //Gtk::Button* button;  // delete
+    Gtk::ToolButton* catalogue_button; 
+    //Gtk::ToolButton *new_store_button;
     Gtk::Label* display;
     Store* store;
     int get_int(std::string prompt);
