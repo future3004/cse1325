@@ -87,6 +87,7 @@ Mainwin::Mainwin(): store{nullptr} {
 Mainwin::~Mainwin() { }
 
 void Mainwin::on_new_store_click(){
+  delete store;
   //Store::Store store{"Mavs Arboreta"};
   //Store my_store{"MavsArboreta"};
   store = new Store{"MavsArboreta"};
@@ -219,6 +220,7 @@ void Mainwin::on_new_mulch_click(){
     store->add_product(mulch);
 }
 void Mainwin::on_view_products_click(){
+     std::ostringstream oss;
      std::vector<Product*> products;
      int store_products = store->products();
     Glib::ustring s = "";
@@ -230,7 +232,9 @@ void Mainwin::on_view_products_click(){
     products = store->get_products_vector();
     for(auto product : products){ 
       //std::cout << *product << "\n\n";
-      s += product->to_string() + "\n\n";
+      oss << *product << "\n\n";
+      //s += product->to_string() + "\n\n";
+      s += oss.str();
     }
     
     //display->set_text(output);

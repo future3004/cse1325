@@ -9,9 +9,9 @@ std::ostream& operator<<(std::ostream& ost, const Material& material) {
     ost << to_string(material);
     return ost;
 }
-std::string Mulch::to_string(){
-    return Product::to_string() + "\n  Volume: " + std::to_string(_volume) + " ft³\n  Material: " + ::to_string(_material);
-}
+//std::string Mulch::to_string(){
+//    return Product::to_string() + "\n  Volume: " + std::to_string(_volume) + " ft³\n  Material: " + ::to_string(_material);
+//}
 std::string to_string(Material material) {
     if(material == Material::RUBBER) return "rubber";
     else if(material == Material::PINE) return "pine";

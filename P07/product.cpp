@@ -8,11 +8,7 @@ std::string Product::to_string() const {
                  + ", $" + std::to_string(round(_price*100)/100) + ")\n  "
                  + _description;
 }
-std::string Product::to_string(){
-    return _name + " (Stock# " + std::to_string(_stocknum)
-                 + ", $" + std::to_string(round(_price*100)/100) + ")\n  "
-                 + _description;
-}
+
 std::ostream& operator<<(std::ostream& ost, const Product& product) {
     ost << product.to_string();
     return ost;

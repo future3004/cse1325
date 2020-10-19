@@ -7,7 +7,6 @@ class Product {
   public: 
     Product(std::string name, double price, std::string description);
     friend std::ostream& operator<<(std::ostream& ost, const Product& product);
-    std::string to_string();
   protected:
     virtual std::string to_string() const;
   private:

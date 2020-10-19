@@ -6,9 +6,9 @@ std::string Plant::to_string() const {
     return Product::to_string() + "\n  Species: " + _species + "\n  Exposure: " + ::to_string(_exposure);
 }
 
-std::string Plant::to_string() {
-    return Product::to_string() + "\n  Species: " + _species + "\n  Exposure: " + ::to_string(_exposure);
-}
+//std::string Plant::to_string() {
+//    return Product::to_string() + "\n  Species: " + _species + "\n  Exposure: " + ::to_string(_exposure);
+//}
 std::ostream& operator<<(std::ostream& ost, const Exposure& exposure) {
     ost << to_string(exposure);
     return ost;
