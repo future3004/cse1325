@@ -17,6 +17,7 @@ std::ostream& operator<<(std::ostream& ost, const Material& material);
 class Mulch : public Product {
   public:
     Mulch(std::string name, double price, std::string description, int volume, Material material);
+   std::string to_string();
   protected:
     std::string to_string() const override;
   private:

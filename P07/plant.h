@@ -16,6 +16,7 @@ std::ostream& operator<<(std::ostream& ost, const Exposure& exposure);
 class Plant : public Product {
   public:
     Plant(std::string name, double price, std::string description, std::string species, Exposure exposure);
+    std::string to_string();
   protected:
     std::string to_string() const override;
   private:

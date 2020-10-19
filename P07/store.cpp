@@ -7,4 +7,5 @@ void Store::add_product(const Plant& product) {_products.push_back(new Plant{pro
 void Store::add_product(const Mulch& product) {_products.push_back(new Mulch{product});}
 int Store::products() {return _products.size();}
 const Product& Store:: product(int index) {return *_products.at(index);}
+std::vector<Product*> Store::get_products_vector(){return _products;}
 

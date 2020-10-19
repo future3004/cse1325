@@ -2,7 +2,7 @@
 #include "entrydialog.h"
 #include <iostream>
 
-Mainwin::Mainwin() {
+Mainwin::Mainwin(): store{nullptr} {
   set_default_size(500, 350);
   set_title("Sprint 07");
   //add(*button);
@@ -219,14 +219,22 @@ void Mainwin::on_new_mulch_click(){
     store->add_product(mulch);
 }
 void Mainwin::on_view_products_click(){
+     std::vector<Product*> products;
      int store_products = store->products();
-    //Glib::ustring s = "\nCurrent Catalog\n===============\n";
-    //std::cout << *(store->product(0)) << "\n\n";
-    //display->set_markup(s);
+    Glib::ustring s = "";
+    //std::string output = "\nCurrent Catalog\n===============\n" + std::to_string(store_products);
+    s += "\nCurrent Catalog\n===============\n";
+
+    
     //std::string s = *(store->product(0)).to_string();
-    //for(auto product : products) std::cout << *product << "\n\n";
-    std::string output = "\nCurrent Catalog\n===============\n" + std::to_string(store_products);
-    display->set_text(output);
+    products = store->get_products_vector();
+    for(auto product : products){ 
+      //std::cout << *product << "\n\n";
+      s += product->to_string() + "\n\n";
+    }
+    
+    //display->set_text(output);
+    display->set_markup(s);
 }
 void Mainwin::on_quit_click(){close();}
 

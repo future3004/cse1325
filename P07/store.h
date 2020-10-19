@@ -15,9 +15,12 @@ class Store {
     void add_product(const Mulch& product);
     int products();
     const Product& product(int index);
+    std::vector<Product*> get_products_vector();
+  protected:
+   std::vector<Product*> _products;
   private:
     std::string _name;
-    std::vector<Product*> _products;
+    
 };
 
 #endif
