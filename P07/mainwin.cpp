@@ -94,111 +94,189 @@ void Mainwin::on_new_store_click(){
 } 
 
 void Mainwin::on_new_tool_click(){
+   // tool values
+   std::string name; 
+   double price; 
+   std::string description;
+   
   EntryDialog tdialog{*this, "<big>Tool Values</big>", true};
     tdialog.set_secondary_text("<b>Tool Name</b>:", true);
     tdialog.set_text("enter tool name..");
     tdialog.run();
+    name = tdialog.get_text();
     
     //price
     EntryDialog pdialog{*this, "<big>Tool Values</big>", true};
     pdialog.set_secondary_text("<b>Tool Price</b>:", true);
     pdialog.set_text("enter tool price..");
     pdialog.run();
+    price = get_double(pdialog.get_text());
     
     //description
     EntryDialog cdialog{*this, "<big>Tool Values</big>", true};
     cdialog.set_secondary_text("<b>Tool Description</b>:", true);
     cdialog.set_text("tool description..");
     cdialog.run();
-
-    //Gtk::MessageDialog mdialog{*this, tdialog.get_text() + pdialog.get_text()
-    //+ cdialog.get_text()};
-    //mdialog.run();
+    description = cdialog.get_text();
+    
+    // add tool to store
+    Tool tool{name, price, description};
+    store->add_product(tool);
 }
 void Mainwin::on_new_plant_click(){
+    // plant values
+    std::string name;
+    double price;
+    std::string description;
+    std::string species;
+    Exposure exposure;
+    
   EntryDialog ndialog{*this, "<big>Plant Values</big>", true};
     ndialog.set_secondary_text("<b>Plant Name</b>:", true);
     ndialog.set_text("enter plant name...");
     ndialog.run();
+    name = ndialog.get_text();
     
     //price
     EntryDialog pdialog{*this, "<big>Plant Values</big>", true};
     pdialog.set_secondary_text("<b>Plant Price</b>:", true);
     pdialog.set_text("enter plant price..");
     pdialog.run();
+    price = get_double(pdialog.get_text());
     
     //description
     EntryDialog cdialog{*this, "<big>Plant Values</big>", true};
     cdialog.set_secondary_text("<b>Plant Description</b>:", true);
     cdialog.set_text("plant description..");
     cdialog.run();
+    description = cdialog.get_text();
     
     //get species
     EntryDialog sdialog{*this, "<big>Plant Values</big>", true};
     sdialog.set_secondary_text("<b>Plant Species</b>:", true);
     sdialog.set_text("plant species..");
     sdialog.run();
+    species = sdialog.get_text();
     
     // get exposure
     EntryDialog edialog{*this, "<big>Plant Values</big>", true};
-    edialog.set_secondary_text("<b>Exposure type:</b>:", true);
-    edialog.set_text("exposure..");
+    edialog.set_secondary_text("<b>Select Exposure: (1) Shade (2) Part Sun (3) Sun? </b>:", true);
+    edialog.set_text("enter exposure..");
     edialog.run();
+    exposure = get_exposure(get_int(edialog.get_text()));
+    
+    //add plant to store
+    Plant plant{name, price, description, species, exposure};
+    store->add_product(plant);
 
     //Gtk::MessageDialog mdialog{*this, edialog.get_text()};
     //mdialog.run();
 }
 void Mainwin::on_new_mulch_click(){
+   // mulch values
+   std::string name;
+   double price;
+   std::string description;
+   int volume;
+   Material material;
+   
   EntryDialog ndialog{*this, "<big>Mulch Values</big>", true};
     ndialog.set_secondary_text("<b>Mulch Name</b>:", true);
     ndialog.set_text("enter mulch name...");
     ndialog.run();
+    name = ndialog.get_text();
     
      //price
     EntryDialog pdialog{*this, "<big>Mulch Values</big>", true};
     pdialog.set_secondary_text("<b>Mulch Price</b>:", true);
     pdialog.set_text("enter mulch price..");
     pdialog.run();
+    price = get_double(pdialog.get_text());
     
     //description
     EntryDialog cdialog{*this, "<big>Mulch Values</big>", true};
     cdialog.set_secondary_text("<b>Mulch Description</b>:", true);
     cdialog.set_text("mulch description..");
     cdialog.run();
+    description = cdialog.get_text();
     
     //get volume
     EntryDialog vdialog{*this, "<big>Mulch Values</big>", true};
     vdialog.set_secondary_text("<b>Mulch Volume</b>:", true);
     vdialog.set_text("mulch volume..");
     vdialog.run();
+    volume = get_int(vdialog.get_text());
     
     //get material type
     EntryDialog mdialog{*this, "<big>Mulch Values</big>", true};
-    mdialog.set_secondary_text("<b>Mulch Material</b>:", true);
+    mdialog.set_secondary_text("<b>Select Material: (1) Rubber (2) Pine (3) Cedar (4) Hardwood? </b>:", true);
     mdialog.set_text("mulch material..");
     mdialog.run();
+    material = get_material(get_int(mdialog.get_text()));
 
-   // Gtk::MessageDialog mdialog{*this, edialog.get_text()};
-   // mdialog.run();
+   //add mulch to store
+    Mulch mulch{name, price, description, volume, material};
+    store->add_product(mulch);
 }
 void Mainwin::on_view_products_click(){
-  //Gtk::MessageDialog mdialog{*this, "Need to show all products added"};
-    //mdialog.run();
-    Glib::ustring s = "Need to show all products added";
-    display->set_markup(s);
+     int store_products = store->products();
+    //Glib::ustring s = "\nCurrent Catalog\n===============\n";
+    //std::cout << *(store->product(0)) << "\n\n";
+    //display->set_markup(s);
+    //std::string s = *(store->product(0)).to_string();
+    //for(auto product : products) std::cout << *product << "\n\n";
+    std::string output = "\nCurrent Catalog\n===============\n" + std::to_string(store_products);
+    display->set_text(output);
 }
 void Mainwin::on_quit_click(){close();}
 
-/*void Mainwin::on_button_click() {
-    EntryDialog edialog{*this, "<big>Enter Values</big>", true};
-    edialog.set_secondary_text("<b>Tool Name</b>:", true);
-    edialog.set_text("enter tool name...");
-    edialog.run();
+Material Mainwin::get_material(int val) {
+    while(true) {
+        switch (val) {
+            case 1: return Material::RUBBER;
+            case 2: return Material::PINE;
+            case 3: return Material::CEDAR;
+            case 4: return Material::HARDWOOD;
+            default: std::cerr << "INVALID SELECTION\n" << std::endl;
+        }
+    }
+} 
 
-    Gtk::MessageDialog mdialog{*this, edialog.get_text()};
-    mdialog.run();
-    
-}*/
+Exposure Mainwin::get_exposure(int val) {
+   while(true){
+        switch (val) {
+            case 1: return Exposure::SHADE;
+            case 2: return Exposure::PARTSUN;
+            case 3: return Exposure::SUN;
+            default: std::cerr << "INVALID SELECTION\n" << std::endl;
+        }
+      }  
+} 
+
+std::string Mainwin::get_string(std::string value) {
+    //std::string s;
+    //std::cout << prompt;
+    //std::getline(std::cin, s);
+    return value;
+}
+
+int Mainwin::get_int(std::string value) {
+        try {
+            return std::stoi(value);
+        } catch(std::exception& e) {
+            std::cerr << "ERROR: " << e.what() << std::endl;
+            return 0;
+        }
+}
+
+double Mainwin::get_double(std::string value) {
+        try {
+            return std::stod(value);
+        } catch(std::exception& e) {
+            std::cerr << "ERROR: " << e.what() << std::endl;
+            return 0.0;
+        }
+}
 
 
 

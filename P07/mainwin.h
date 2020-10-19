@@ -22,9 +22,12 @@ class Mainwin : public Gtk::Window {
     //Gtk::ToolButton *new_store_button;
     Gtk::Label* display;
     Store* store;
-    int get_int(std::string prompt);
-    double get_double(std::string prompt);
-    std::string get_string(std::string prompt);
+
+    int get_int(std::string value);
+    double get_double(std::string value);
+    std::string get_string(std::string value);
+    Material get_material(int val);
+    Exposure get_exposure(int val);
 };
 
 
