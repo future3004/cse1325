@@ -6,10 +6,14 @@
 #include "mulch.h"
 
 #include <vector>
+#include <iostream>
 
 class Store {
   public:
     Store(std::string name);
+    store(std::istream& ist);
+    void save(std::ostream& ost);
+    
     void add_product(const Tool& product);
     void add_product(const Plant& product);
     void add_product(const Mulch& product);
