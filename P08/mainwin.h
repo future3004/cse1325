@@ -18,8 +18,6 @@ class Mainwin : public Gtk::Window {
     void on_quit_click();
     
   private:
-    Gtk::ToolButton* catalogue_button; 
-    //Gtk::ToolButton *new_store_button;
     Gtk::Label* display;
     Store* store;
 

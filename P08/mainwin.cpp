@@ -21,13 +21,29 @@ Mainwin::Mainwin(): store{nullptr} {
     Gtk::Menu *filemenu = Gtk::manage(new Gtk::Menu());
     menuitem_file->set_submenu(*filemenu);
     
+    //         NEW STORE
+    // Append to the File menu
+    Gtk::MenuItem *menuitem_store = Gtk::manage(new Gtk::MenuItem("_New Store", true));
+    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    filemenu->append(*menuitem_store);
+    //         SAVE AS
+    // Append to the File menu
+    Gtk::MenuItem *menuitem_save = Gtk::manage(new Gtk::MenuItem("_Save As", true));
+    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    filemenu->append(*menuitem_save); 
+    //         OPEN
+    // Append to the File menu
+    Gtk::MenuItem *menuitem_open = Gtk::manage(new Gtk::MenuItem("_Open", true));
+    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    filemenu->append(*menuitem_open);
+    
     //         Q U I T
     // Append Quit to the File menu
     Gtk::MenuItem *menuitem_quit = Gtk::manage(new Gtk::MenuItem("_Quit", true));
     menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
     filemenu->append(*menuitem_quit);
     
-    //         Insert
+    //         INSERT
     // Append insert to menu bar
     Gtk::MenuItem *menuitem_insert = Gtk::manage(new Gtk::MenuItem("_Insert", true));
     //menuitem_new->signal_activate().connect([this] {this->on_new_game_click();});
@@ -48,30 +64,34 @@ Mainwin::Mainwin(): store{nullptr} {
     menuitem_mulch->signal_activate().connect([this] {this->on_new_mulch_click();});
     insertmenu->append(*menuitem_mulch);
     
+    // append help to menu bar
+    Gtk::MenuItem *menuitem_help = Gtk::manage(new Gtk::MenuItem("_Help", true));
+    menubar->append(*menuitem_help);
+    Gtk::Menu *helpmenu = Gtk::manage(new Gtk::Menu());
+    menuitem_help->set_submenu(*helpmenu);
+    Gtk::MenuItem *subitem_help = Gtk::manage(new Gtk::MenuItem("_About", true));
+    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    helpmenu->append(*subitem_help);
     
     // T O O L B A R
     // Add a toolbar to the vertical box below the menu
     Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
     vbox->pack_start(*toolbar, Gtk::PACK_SHRINK, 0);
     
-//     Add a new store
-//    new_store_button = Gtk::manage(new Gtk::ToolButton(Gtk::Stock::NEW));
-//    new_store_button->set_tooltip_markup("Create a new store");
-//    new_store_button->signal_clicked().connect([this] {this->on_new_store_click();});
-//    toolbar->append(*new_store_button);
     
-    //     VIEW CATALOGUE
-    Gtk::Image* button2_image = Gtk::manage(new Gtk::Image{"cat.png"});
-    catalogue_button = Gtk::manage(new Gtk::ToolButton(*button2_image));
-    catalogue_button->set_tooltip_markup("View all the products");
-    catalogue_button->signal_clicked().connect([this] {this->on_view_products_click();});
-    toolbar->append(*catalogue_button);
+//         VIEW CATALOGUE
+//    Gtk::Image* button2_image = Gtk::manage(new Gtk::Image{"cat.png"});
+//    catalogue_button = Gtk::manage(new Gtk::ToolButton(*button2_image));
+//    catalogue_button->set_tooltip_markup("View all the products");
+//    catalogue_button->signal_clicked().connect([this] {this->on_view_products_click();});
+//    toolbar->append(*catalogue_button);
     
     // message label display
     display = Gtk::manage(new Gtk::Label());
     display->set_hexpand(true);
     display->set_vexpand(true);
-    vbox->pack_start(*display, Gtk::PACK_SHRINK, 0);
+    //vbox->pack_start(*display, Gtk::PACK_SHRINK, 0);
+    vbox->add(*display);
     
     
     // Make the box and everything in it visible
