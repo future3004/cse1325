@@ -70,7 +70,7 @@ Mainwin::Mainwin(): store{nullptr} {
     Gtk::Menu *helpmenu = Gtk::manage(new Gtk::Menu());
     menuitem_help->set_submenu(*helpmenu);
     Gtk::MenuItem *subitem_help = Gtk::manage(new Gtk::MenuItem("_About", true));
-    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    subitem_help->signal_activate().connect([this] {this->on_about_click();});
     helpmenu->append(*subitem_help);
     
     // T O O L B A R
@@ -238,6 +238,28 @@ double Mainwin::get_double(std::string prompt) {
         }
     }
 }
+
+void Mainwin::on_about_click(){
+  
+    Gtk::AboutDialog dialog;
+    dialog.set_transient_for(*this); // Avoid the discouraging warning
+    dialog.set_program_name("MANGA");
+    auto logo = Gdk::Pixbuf::create_from_file("logo.jpg");
+    dialog.set_logo(logo);
+    dialog.set_version("Version 1.2.1");
+    dialog.set_copyright("Copyright 2020-2025");
+    dialog.set_license_type(Gtk::License::LICENSE_GPL_3_0);
+    std::vector< Glib::ustring > authors = {"Richard Kalibbala"};
+    dialog.set_authors(authors);
+    std::vector< Glib::ustring > artists = {
+        "Logo by PIXXY, https://creativecommons.org/licenses/by-nc-nd/4.0/",
+        "Logo, licensed for personal and commercial purposes with attribution https://pixy.org/1131433/"};
+    dialog.set_artists(artists);
+    dialog.run();
+}
+
+
+
 
 
 

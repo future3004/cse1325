@@ -17,9 +17,16 @@ class Mainwin : public Gtk::Window {
     void on_view_products_click();
     void on_quit_click();
     
+    void on_save_click();
+    void on_save_as_click();
+    void on_open_click();
+    void on_about_click();
+    
   private:
     Gtk::Label* display;
     Store* store;
+    std::string filename;
+
 
     int get_int(std::string value);
     double get_double(std::string value);
