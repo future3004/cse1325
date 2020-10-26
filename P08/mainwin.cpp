@@ -24,7 +24,7 @@ Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
     //         NEW STORE
     // Append to the File menu
     Gtk::MenuItem *menuitem_store = Gtk::manage(new Gtk::MenuItem("_New Store", true));
-    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    menuitem_store->signal_activate().connect([this] {this->on_new_store_click();});
     filemenu->append(*menuitem_store);
     //         SAVE AS
     // Append to the File menu
@@ -77,15 +77,7 @@ Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
     // Add a toolbar to the vertical box below the menu
     Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
     vbox->pack_start(*toolbar, Gtk::PACK_SHRINK, 0);
-    
-    
-//         VIEW CATALOGUE
-//    Gtk::Image* button2_image = Gtk::manage(new Gtk::Image{"cat.png"});
-//    catalogue_button = Gtk::manage(new Gtk::ToolButton(*button2_image));
-//    catalogue_button->set_tooltip_markup("View all the products");
-//    catalogue_button->signal_clicked().connect([this] {this->on_view_products_click();});
-//    toolbar->append(*catalogue_button);
-    
+ 
     // message label display
     display = Gtk::manage(new Gtk::Label());
     display->set_hexpand(true);
@@ -99,16 +91,22 @@ Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
     
     
     // create new store
-    on_new_store_click();
+    //on_new_store_click();
 }
 
 Mainwin::~Mainwin() { }
 
 void Mainwin::on_new_store_click(){
+  std::string store_name;
   delete store;
-  //Store::Store store{"Mavs Arboreta"};
   //Store my_store{"MavsArboreta"};
-  store = new Store{"MavsArboreta"};
+   EntryDialog edialog(*this, "<big>New Store</big>", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+    edialog.set_secondary_text("Store name?", true);
+    if(edialog.run() == Gtk::RESPONSE_CANCEL) throw std::runtime_error{"CANCEL"};
+    store_name = edialog.get_text();
+  //store_name = get_string("New store name?");
+  store = new Store{store_name};
+  on_view_products_click();
   
 } 
 
@@ -267,6 +265,7 @@ void Mainwin::on_save_as_click(){
     // user wants to save
         try {
             std::ofstream ofs{dialog.get_filename()};
+            //std::ostream& ost{dialog.get_filename()};
             store->save(ofs);
             //ofs << filename << std::endl;
             if(!ofs) throw std::runtime_error{"Error writing file"};
@@ -303,6 +302,7 @@ void Mainwin::on_open_click(){
         try {
             delete store;
             std::ifstream ifs{dialog.get_filename()};
+            //std::istream& ist{dialog.get_filename()};
             //nim = new Nim{ifs};
             store = new Store{ifs};
             //bool b;
