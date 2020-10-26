@@ -10,7 +10,8 @@ enum class Material {
   HARDWOOD,
 };
 
-std::string to_string(Material material);
+std::string to_string_material(Material material);
+Material material_string(std::string ist_value);
 
 std::ostream& operator<<(std::ostream& ost, const Material& material);
 

@@ -2,6 +2,7 @@
 #define __PRODUCT_H
 
 #include <iostream>
+#include <fstream>
 
 class Product {
   public: 

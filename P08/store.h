@@ -7,11 +7,12 @@
 
 #include <vector>
 #include <iostream>
+#include <fstream>
 
 class Store {
   public:
     Store(std::string name);
-    store(std::istream& ist);
+    Store(std::istream& ist);
     void save(std::ostream& ost);
     
     void add_product(const Tool& product);

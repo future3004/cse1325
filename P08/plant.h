@@ -9,7 +9,8 @@ enum class Exposure {
   SUN,
 };
 
-std::string to_string(Exposure exposure);
+std::string my_string(Exposure exposure);
+Exposure from_string(std::string ist_value);
 
 std::ostream& operator<<(std::ostream& ost, const Exposure& exposure);
 
