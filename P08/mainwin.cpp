@@ -2,7 +2,7 @@
 #include "entrydialog.h"
 #include <iostream>
 
-Mainwin::Mainwin(): store{nullptr} {
+Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
   set_default_size(500, 350);
   set_title("Sprint 08");
  
@@ -29,12 +29,12 @@ Mainwin::Mainwin(): store{nullptr} {
     //         SAVE AS
     // Append to the File menu
     Gtk::MenuItem *menuitem_save = Gtk::manage(new Gtk::MenuItem("_Save As", true));
-    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    menuitem_save->signal_activate().connect([this] {this->on_save_as_click();});
     filemenu->append(*menuitem_save); 
     //         OPEN
     // Append to the File menu
     Gtk::MenuItem *menuitem_open = Gtk::manage(new Gtk::MenuItem("_Open", true));
-    //menuitem_quit->signal_activate().connect([this] {this->on_quit_click();});
+    menuitem_open->signal_activate().connect([this] {this->on_open_click();});
     filemenu->append(*menuitem_open);
     
     //         Q U I T
@@ -235,6 +235,83 @@ double Mainwin::get_double(std::string prompt) {
             return std::stod(get_string(prompt));
         } catch (std::invalid_argument& e) {
             prompt = "Invalid value, please try again:";
+        }
+    }
+}
+
+
+void Mainwin::on_save_as_click(){
+  Gtk::FileChooserDialog dialog("Please choose a file",
+          Gtk::FileChooserAction::FILE_CHOOSER_ACTION_SAVE);
+    dialog.set_transient_for(*this);
+
+    auto filter_manga = Gtk::FileFilter::create();
+    filter_manga->set_name("MANGA files");
+    filter_manga->add_pattern("*.manga");
+    dialog.add_filter(filter_manga);
+ 
+    auto filter_any = Gtk::FileFilter::create();
+    filter_any->set_name("Any files");
+    filter_any->add_pattern("*");
+    dialog.add_filter(filter_any);
+
+    dialog.set_filename("untitled.manga");
+
+    //Add response buttons to the dialog:
+    dialog.add_button("_Cancel", 0);
+    dialog.add_button("_Save", 1);
+
+    int result = dialog.run();
+
+    if (result == 1) {
+    // user wants to save
+        try {
+            std::ofstream ofs{dialog.get_filename()};
+            store->save(ofs);
+            //ofs << filename << std::endl;
+            if(!ofs) throw std::runtime_error{"Error writing file"};
+        } catch(std::exception& e) {
+            Gtk::MessageDialog{*this, "Unable to save game"}.run();
+        }
+    }
+}
+
+void Mainwin::on_open_click(){
+  Gtk::FileChooserDialog dialog("Please choose a file",
+          Gtk::FileChooserAction::FILE_CHOOSER_ACTION_OPEN);
+    dialog.set_transient_for(*this);
+
+    auto filter_manga = Gtk::FileFilter::create();
+    filter_manga->set_name("MANGA files");
+    filter_manga->add_pattern("*.manga");
+    dialog.add_filter(filter_manga);
+ 
+    auto filter_any = Gtk::FileFilter::create();
+    filter_any->set_name("Any files");
+    filter_any->add_pattern("*");
+    dialog.add_filter(filter_any);
+
+    dialog.set_filename("untitled.manga");
+
+    //Add response buttons the the dialog:
+    dialog.add_button("_Cancel", 0);
+    dialog.add_button("_Open", 1);
+
+    int result = dialog.run();
+
+    if (result == 1) {
+        try {
+            delete store;
+            std::ifstream ifs{dialog.get_filename()};
+            //nim = new Nim{ifs};
+            store = new Store{ifs};
+            //bool b;
+            //ifs >> b;
+            //computer_player->set_active(b);
+            if(!ifs) throw std::runtime_error{"File contents bad"};
+            on_view_products_click();
+        } catch (std::exception& e) {
+            Gtk::MessageDialog{*this, "Unable to open manga"}.run();
         }
     }
 }
