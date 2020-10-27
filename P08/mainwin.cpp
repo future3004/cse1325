@@ -265,7 +265,6 @@ void Mainwin::on_save_as_click(){
     // user wants to save
         try {
             std::ofstream ofs{dialog.get_filename()};
-            //std::ostream& ost{dialog.get_filename()};
             store->save(ofs);
             //ofs << filename << std::endl;
             if(!ofs) throw std::runtime_error{"Error writing file"};
@@ -302,12 +301,7 @@ void Mainwin::on_open_click(){
         try {
             delete store;
             std::ifstream ifs{dialog.get_filename()};
-            //std::istream& ist{dialog.get_filename()};
-            //nim = new Nim{ifs};
             store = new Store{ifs};
-            //bool b;
-            //ifs >> b;
-            //computer_player->set_active(b);
             if(!ifs) throw std::runtime_error{"File contents bad"};
             on_view_products_click();
         } catch (std::exception& e) {

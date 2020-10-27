@@ -5,12 +5,14 @@ Store::Store(std::string name) : _name{name} { }
 Store::Store(std::istream& ist){
   int _size;
   std::string _type;
-  getline(ist, _name);
+  std::getline(ist, _name);
   ist >> _size;
+  ist.ignore(32767, '\n');
   
   for(int i = 0; i < _size; ++i){
   
-   getline(ist, _type);
+   std::getline(ist, _type);
+   ist.ignore(32767, '\n');
    
    if(_type == "tool"){
     new Tool{ist};
@@ -37,6 +39,7 @@ void Store::save(std::ostream& ost){
  
  for(int i = 0; i < _products.size(); ++i){
    _products[i]->save(ost);
+   //(_products.at(i))->save(ost);
  }
 }
 

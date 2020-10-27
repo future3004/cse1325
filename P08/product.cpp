@@ -6,9 +6,9 @@ Product::Product(std::string name, double price, std::string description)
     
 Product::Product(std::istream& ist){
   ist >> _nextsn >> _stocknum; 
-  getline(ist, _name);
+  std::getline(ist, _name);
   ist >> _price; 
-  getline(ist, _description);
+  std::getline(ist, _description);
   ist.ignore(32767, '\n');
 }
 
