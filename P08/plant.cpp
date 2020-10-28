@@ -6,9 +6,7 @@ Plant::Plant(std::string name, double price, std::string description, std::strin
 Plant::Plant(std::istream& ist): Product(ist) {
   std::string ist_val;
   std::getline(ist, _species);
-  ist.ignore(32767, '\n');
   std::getline(ist, ist_val);
-  ist.ignore(32767, '\n');
   _exposure = from_string(ist_val);
 }
 

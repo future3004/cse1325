@@ -2,7 +2,7 @@
 #include "entrydialog.h"
 #include <iostream>
 
-Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
+Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
   set_default_size(500, 350);
   set_title("Sprint 08");
  
@@ -26,11 +26,16 @@ Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
     Gtk::MenuItem *menuitem_store = Gtk::manage(new Gtk::MenuItem("_New Store", true));
     menuitem_store->signal_activate().connect([this] {this->on_new_store_click();});
     filemenu->append(*menuitem_store);
+    //         SAVE
+    // Append to the File menu
+    Gtk::MenuItem *menuitem_save = Gtk::manage(new Gtk::MenuItem("_Save", true));
+    menuitem_save->signal_activate().connect([this] {this->on_save_click();});
+    filemenu->append(*menuitem_save); 
     //         SAVE AS
     // Append to the File menu
-    Gtk::MenuItem *menuitem_save = Gtk::manage(new Gtk::MenuItem("_Save As", true));
-    menuitem_save->signal_activate().connect([this] {this->on_save_as_click();});
-    filemenu->append(*menuitem_save); 
+    Gtk::MenuItem *menuitem_save_as = Gtk::manage(new Gtk::MenuItem("_Save As", true));
+    menuitem_save_as->signal_activate().connect([this] {this->on_save_as_click();});
+    filemenu->append(*menuitem_save_as); 
     //         OPEN
     // Append to the File menu
     Gtk::MenuItem *menuitem_open = Gtk::manage(new Gtk::MenuItem("_Open", true));
@@ -91,22 +96,26 @@ Mainwin::Mainwin(): store{nullptr}, filename{"Untitled"} {
     
     
     // create new store
-    //on_new_store_click();
+    on_new_store_click(true);
 }
 
 Mainwin::~Mainwin() { }
 
-void Mainwin::on_new_store_click(){
-  std::string store_name;
-  delete store;
-  //Store my_store{"MavsArboreta"};
-   EntryDialog edialog(*this, "<big>New Store</big>", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
-    edialog.set_secondary_text("Store name?", true);
-    if(edialog.run() == Gtk::RESPONSE_CANCEL) throw std::runtime_error{"CANCEL"};
-    store_name = edialog.get_text();
-  //store_name = get_string("New store name?");
-  store = new Store{store_name};
-  on_view_products_click();
+void Mainwin::on_new_store_click(bool untitled){
+  std::string name = "Untitled";
+    try {
+        if(!untitled){
+          EntryDialog edialog(*this, "<big>New Store</big>", true, Gtk::MESSAGE_QUESTION, Gtk::BUTTONS_OK_CANCEL);
+          edialog.set_secondary_text("Store name?", true);
+          if(edialog.run() == Gtk::RESPONSE_CANCEL) throw std::runtime_error{"CANCEL"};
+          name = edialog.get_text();
+        } //name = get_string("New store name?");
+        filename = "untitled.manga";
+    } catch (std::exception& e) {
+    }
+    delete store; store = nullptr;
+    store = new Store{name};
+    on_view_products_click();
   
 } 
 
@@ -237,6 +246,17 @@ double Mainwin::get_double(std::string prompt) {
     }
 }
 
+void Mainwin::on_save_click(){
+  try {
+        std::ofstream ofs{filename};
+        store->save(ofs);
+        if(!ofs) throw std::runtime_error{"Error writing file " + filename};
+    } 
+    catch(std::exception& e) {
+        Gtk::MessageDialog{*this, "Unable to save store: " + std::string{e.what()},
+            false, Gtk::MESSAGE_WARNING}.run();
+    }
+}
 
 void Mainwin::on_save_as_click(){
   Gtk::FileChooserDialog dialog("Please choose a file",
@@ -263,14 +283,8 @@ void Mainwin::on_save_as_click(){
 
     if (result == 1) {
     // user wants to save
-        try {
-            std::ofstream ofs{dialog.get_filename()};
-            store->save(ofs);
-            //ofs << filename << std::endl;
-            if(!ofs) throw std::runtime_error{"Error writing file"};
-        } catch(std::exception& e) {
-            Gtk::MessageDialog{*this, "Unable to save game"}.run();
-        }
+        filename = dialog.get_filename();
+        on_save_click();  // Delegate to save
     }
 }
 
@@ -299,13 +313,16 @@ void Mainwin::on_open_click(){
 
     if (result == 1) {
         try {
-            delete store;
-            std::ifstream ifs{dialog.get_filename()};
+            filename = dialog.get_filename();
+            std::ifstream ifs{filename};
+            delete store; store = nullptr;
             store = new Store{ifs};
-            if(!ifs) throw std::runtime_error{"File contents bad"};
+            if(!ifs) throw std::runtime_error{"Error reading file " + filename};
             on_view_products_click();
         } catch (std::exception& e) {
-            Gtk::MessageDialog{*this, "Unable to open manga"}.run();
+            Gtk::MessageDialog{*this, "Unable to open store: " + std::string{e.what()},
+            false, Gtk::MESSAGE_WARNING}.run();
+            on_new_store_click(true);
         }
     }
 }

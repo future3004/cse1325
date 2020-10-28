@@ -14,7 +14,6 @@ class Store {
     Store(std::string name);
     Store(std::istream& ist);
     void save(std::ostream& ost);
-    
     void add_product(const Tool& product);
     void add_product(const Plant& product);
     void add_product(const Mulch& product);

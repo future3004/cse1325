@@ -18,7 +18,7 @@ class Plant : public Product {
   public:
     Plant(std::string name, double price, std::string description, std::string species, Exposure exposure);
     Plant(std::istream& ist);
-    void save(std::ostream& ost);
+    void save(std::ostream& ost) override;
   protected:
     std::string to_string() const override;
   private:

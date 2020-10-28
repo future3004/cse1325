@@ -6,8 +6,8 @@ Mulch::Mulch(std::string name, double price, std::string description, int volume
 Mulch::Mulch(std::istream& ist): Product(ist){
  std::string ist_val;
  ist >> _volume;
- std::getline(ist, ist_val);
  ist.ignore(32767, '\n');
+ std::getline(ist, ist_val);
  _material = material_string(ist_val);
 }
 

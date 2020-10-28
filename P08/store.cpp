@@ -12,17 +12,18 @@ Store::Store(std::istream& ist){
   for(int i = 0; i < _size; ++i){
   
    std::getline(ist, _type);
-   ist.ignore(32767, '\n');
    
    if(_type == "tool"){
-    new Tool{ist};
+    _products.push_back(new Tool(ist));
    } 
    else if(_type == "plant"){
-    new Plant{ist};
+    _products.push_back(new Plant(ist));
    }
    else if(_type == "mulch"){
-    new Mulch{ist};
-   } 
+    _products.push_back(new Mulch(ist));
+   } else {
+     throw std::runtime_error{"Invalid product type on input: " + _type};
+   }
  }
  
 }

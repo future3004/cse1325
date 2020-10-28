@@ -19,7 +19,7 @@ class Mulch : public Product {
   public:
     Mulch(std::string name, double price, std::string description, int volume, Material material);
     Mulch(std::istream& ist);
-    void save(std::ostream& ost);
+    void save(std::ostream& ost) override;
   protected:
     std::string to_string() const override;
   private:
