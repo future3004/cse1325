@@ -4,6 +4,7 @@
 #include "tool.h"
 #include "plant.h"
 #include "mulch.h"
+#include "customer.h"
 
 #include <vector>
 #include <iostream>
@@ -19,9 +20,14 @@ class Store {
     void add_product(const Mulch& product);
     int products();
     const Product& product(int index);
+    
+    int customers();
+    void add_customer(const Customer& customer);
+    const Customer& customer(int index);
   private:
     std::string _name;
     std::vector<Product*> _products;
+    std::vector<Customer*> _customers;
     
 };
 

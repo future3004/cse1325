@@ -6,8 +6,8 @@ all: manga
 debug: CXXFLAGS += -g
 debug: manga
 
-manga: main.o mainwin.o entrydialog.o store.o product.o plant.o tool.o mulch.o *.h
-	$(CXX) $(CXXFLAGS) main.o mainwin.o entrydialog.o store.o product.o plant.o tool.o mulch.o $(GTKFLAGS) -o manga
+manga: main.o mainwin.o entrydialog.o store.o product.o plant.o tool.o mulch.o customer.o *.h
+	$(CXX) $(CXXFLAGS) main.o mainwin.o entrydialog.o store.o product.o plant.o tool.o mulch.o customer.o $(GTKFLAGS) -o manga
 
 main.o: main.cpp *.h
 	$(CXX) $(CXXFLAGS) -c main.cpp $(GTKFLAGS) -o main.o
@@ -28,6 +28,9 @@ tool.o: tool.cpp *.h
 	$(CXX) $(CXXFLAGS) -c tool.cpp -o tool.o
 mulch.o: mulch.cpp *.h
 	$(CXX) $(CXXFLAGS) -c mulch.cpp -o mulch.o
+
+customer.o: customer.cpp *.h
+	$(CXX) $(CXXFLAGS) -c customer.cpp -o customer.o
 
 clean:
 	rm -f *.o *.gch ~* a.out manga

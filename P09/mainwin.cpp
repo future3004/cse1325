@@ -4,7 +4,7 @@
 
 Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
   set_default_size(500, 350);
-  set_title("Sprint 08");
+  set_title("Sprint 09");
  
   Gtk::Box *vbox = Gtk::manage(new Gtk::VBox);
   add(*vbox);
@@ -69,6 +69,10 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     menuitem_mulch->signal_activate().connect([this] {this->on_new_mulch_click();});
     insertmenu->append(*menuitem_mulch);
     
+    Gtk::MenuItem *insert_customer = Gtk::manage(new Gtk::MenuItem("_Customer", true));
+    insert_customer->signal_activate().connect([this] {this->on_new_customer_click();});
+    insertmenu->append(*insert_customer);
+    
     // append help to menu bar
     Gtk::MenuItem *menuitem_help = Gtk::manage(new Gtk::MenuItem("_Help", true));
     menubar->append(*menuitem_help);
@@ -77,6 +81,19 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     Gtk::MenuItem *subitem_help = Gtk::manage(new Gtk::MenuItem("_About", true));
     subitem_help->signal_activate().connect([this] {this->on_about_click();});
     helpmenu->append(*subitem_help);
+    
+    // add view to menu bar
+    Gtk::MenuItem *menuitem_view = Gtk::manage(new Gtk::MenuItem("_View", true));
+    menubar->append(*menuitem_view);
+    Gtk::Menu *view_menu = Gtk::manage(new Gtk::Menu());
+    menuitem_view->set_submenu(*view_menu);
+    Gtk::MenuItem *view_customer = Gtk::manage(new Gtk::MenuItem("_Customers", true));
+    view_customer->signal_activate().connect([this] {this->on_view_customers_click();});
+    view_menu->append(*view_customer);
+    
+    Gtk::MenuItem *view_product = Gtk::manage(new Gtk::MenuItem("_Products", true));
+    view_product->signal_activate().connect([this] {this->on_view_products_click();});
+    view_menu->append(*view_product);
     
     // T O O L B A R
     // Add a toolbar to the vertical box below the menu
@@ -118,6 +135,56 @@ void Mainwin::on_new_store_click(bool untitled){
     on_view_products_click();
   
 } 
+
+void Mainwin::on_new_customer_click(){
+ // Create the dialog on stack with title, avoiding the "discouraging warning"
+    Gtk::Dialog dialog{"Customer Info", *this};
+
+    // customer name
+    Gtk::Label name_label{"Customer Name: "};
+    dialog.get_content_area()->pack_start(name_label, Gtk::PACK_SHRINK, 0);
+    Gtk::Entry name_entry;
+    name_entry.set_text("name");
+    dialog.get_content_area()->pack_start(name_entry);
+    
+    // phone
+     Gtk::Label phone_label{"Customer Phone: "};
+    dialog.get_content_area()->pack_start(phone_label, Gtk::PACK_SHRINK, 0);
+    Gtk::Entry phone_entry;
+    phone_entry.set_text("0001112222");
+    dialog.get_content_area()->pack_start(phone_entry);
+    
+    // email
+     Gtk::Label email_label{"Customer Email: "};
+    dialog.get_content_area()->pack_start(email_label, Gtk::PACK_SHRINK, 0);
+    Gtk::Entry email_entry;
+    email_entry.set_text("test@email.com");
+    dialog.get_content_area()->pack_start(email_entry);
+
+    
+    // Add 2 buttons (Gtk::Dialog handles buttons for you, just use add_button method!)
+    // Button response IDs are from https://developer.gnome.org/gtkmm/stable/group__gtkmmEnums.html
+    dialog.add_button("OK", Gtk::RESPONSE_OK);
+    dialog.add_button("Cancel", Gtk::RESPONSE_CANCEL);
+    
+    int response;
+
+    // It's ready!  Now display it to the user.
+    dialog.get_vbox()->show_all();
+    
+    response = dialog.run();
+    if(response == Gtk::RESPONSE_OK){
+      //create & save customer
+      std::string name; 
+      std::string phone; 
+      std::string email;
+      name = name_entry.get_text();
+      phone = phone_entry.get_text();
+      email = email_entry.get_text();
+      
+      store->add_customer(*(new Customer{name, phone, email}));
+    }
+}
 
 void Mainwin::on_new_tool_click(){
    // tool values
@@ -184,11 +251,22 @@ void Mainwin::on_new_mulch_click(){
     }
  
 }
+void Mainwin::on_view_customers_click(){
+  std::string c = "-------------ALL CUSTOMERS-------------\n\n";
+  for(int i=0; i<store->customers(); ++i){
+    std::ostringstream oss;
+    oss << store->customer(i) << '\n' << '\n';
+    c += oss.str();
+  }
+  
+  display->set_text(c);
+}
+
 void Mainwin::on_view_products_click(){
      std::string s = "Current Products\n----------------\n\n";
     for(int i=0; i<store->products(); ++i) {
         std::ostringstream oss;
-        oss << store->product(i) << '\n' << '\n';
+        oss << store->product(i) << '\n';
         s += oss.str();
     }
     display->set_text(s);

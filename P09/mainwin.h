@@ -15,12 +15,15 @@ class Mainwin : public Gtk::Window {
     void on_new_plant_click();
     void on_new_mulch_click();
     void on_view_products_click();
-    void on_quit_click();
+    void on_view_customers_click();
+    
+    void on_new_customer_click();
     
     void on_save_click();
     void on_save_as_click();
     void on_open_click();
     void on_about_click();
+    void on_quit_click();
     
   private:
     Gtk::Label* display;
