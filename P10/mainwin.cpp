@@ -73,6 +73,10 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     insert_customer->signal_activate().connect([this] {this->on_new_customer_click();});
     insertmenu->append(*insert_customer);
     
+    Gtk::MenuItem *insert_order = Gtk::manage(new Gtk::MenuItem("_Order", true));
+    //insert_order->signal_activate().connect();
+    insertmenu->append(*insert_order);
+    
     // append help to menu bar
     Gtk::MenuItem *menuitem_help = Gtk::manage(new Gtk::MenuItem("_Help", true));
     menubar->append(*menuitem_help);
@@ -95,10 +99,39 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     view_product->signal_activate().connect([this] {this->on_view_products_click();});
     view_menu->append(*view_product);
     
+    Gtk::MenuItem *view_orders = Gtk::manage(new Gtk::MenuItem("_Orders", true));
+    //view_orders->signal_activate().connect();
+    view_menu->append(*view_orders);
+    
     // T O O L B A R
     // Add a toolbar to the vertical box below the menu
     Gtk::Toolbar *toolbar = Gtk::manage(new Gtk::Toolbar);
     vbox->pack_start(*toolbar, Gtk::PACK_SHRINK, 0);
+    
+    // new store button to toolbar
+    Gtk::Image *store_btn_image = Gtk::manage(new Gtk::Image{"new.png"});
+    Gtk::ToolButton *new_store_btn = Gtk::manage(new Gtk::ToolButton(*store_btn_image));
+    new_store_btn->set_tooltip_markup("Create new store");
+    //new_store_btn->signal_clicked().connect([this] {this->;});
+    toolbar->append(*new_store_btn);
+    // open button to toolbar
+    Gtk::Image *open_btn_image = Gtk::manage(new Gtk::Image{"open.png"});
+    Gtk::ToolButton *open_btn = Gtk::manage(new Gtk::ToolButton(*open_btn_image));
+    open_btn->set_tooltip_markup("Open a saved file.manga");
+    //open_btn->signal_clicked().connect([this] {this->;});
+    toolbar->append(*open_btn);
+    // save button to toolbar
+    Gtk::Image *save_btn_image = Gtk::manage(new Gtk::Image{"save.png"});
+    Gtk::ToolButton *save_btn = Gtk::manage(new Gtk::ToolButton(*save_btn_image));
+    save_btn->set_tooltip_markup("Save");
+    //save_btn->signal_clicked().connect([this] {this->;});
+    toolbar->append(*save_btn);
+    // save as button to toolbar
+    Gtk::Image *save_as_btn_image = Gtk::manage(new Gtk::Image{"save-as.png"});
+    Gtk::ToolButton *save_as_btn = Gtk::manage(new Gtk::ToolButton(*save_as_btn_image));
+    save_as_btn->set_tooltip_markup("Save As");
+    //save_as_btn->signal_clicked().connect([this] {this->;});
+    toolbar->append(*save_as_btn);
  
     // message label display
     display = Gtk::manage(new Gtk::Label());
