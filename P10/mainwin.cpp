@@ -112,26 +112,44 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     Gtk::Image *store_btn_image = Gtk::manage(new Gtk::Image{"new.png"});
     Gtk::ToolButton *new_store_btn = Gtk::manage(new Gtk::ToolButton(*store_btn_image));
     new_store_btn->set_tooltip_markup("Create new store");
-    //new_store_btn->signal_clicked().connect([this] {this->;});
+    new_store_btn->signal_clicked().connect([this] {this->on_new_store_click();});
     toolbar->append(*new_store_btn);
     // open button to toolbar
     Gtk::Image *open_btn_image = Gtk::manage(new Gtk::Image{"open.png"});
     Gtk::ToolButton *open_btn = Gtk::manage(new Gtk::ToolButton(*open_btn_image));
     open_btn->set_tooltip_markup("Open a saved file.manga");
-    //open_btn->signal_clicked().connect([this] {this->;});
+    open_btn->signal_clicked().connect([this] {this->on_open_click();});
     toolbar->append(*open_btn);
     // save button to toolbar
     Gtk::Image *save_btn_image = Gtk::manage(new Gtk::Image{"save.png"});
     Gtk::ToolButton *save_btn = Gtk::manage(new Gtk::ToolButton(*save_btn_image));
     save_btn->set_tooltip_markup("Save");
-    //save_btn->signal_clicked().connect([this] {this->;});
+    save_btn->signal_clicked().connect([this] {this->on_save_click();});
     toolbar->append(*save_btn);
     // save as button to toolbar
     Gtk::Image *save_as_btn_image = Gtk::manage(new Gtk::Image{"save-as.png"});
     Gtk::ToolButton *save_as_btn = Gtk::manage(new Gtk::ToolButton(*save_as_btn_image));
     save_as_btn->set_tooltip_markup("Save As");
-    //save_as_btn->signal_clicked().connect([this] {this->;});
+    save_as_btn->signal_clicked().connect([this] {this->on_save_as_click();});
     toolbar->append(*save_as_btn);
+    
+    // tool to toolbar
+    Gtk::Image *tool_image = Gtk::manage(new Gtk::Image{"tool.png"});
+    Gtk::ToolButton *tool_btn = Gtk::manage(new Gtk::ToolButton(*tool_image));
+    tool_btn->set_tooltip_markup("Create tool");
+    tool_btn->signal_clicked().connect([this] {this->on_new_tool_click();});
+    toolbar->append(*tool_btn);
+    
+    // plant to toolbar
+    Gtk::Image *plant_image = Gtk::manage(new Gtk::Image{"plants.png"});
+    Gtk::ToolButton *plant_btn = Gtk::manage(new Gtk::ToolButton(*plant_image));
+    plant_btn->set_tooltip_markup("Create plant");
+    plant_btn->signal_clicked().connect([this] {this->on_new_plant_click();});
+    toolbar->append(*plant_btn);
+    
+    // status bar
+    Gtk::Statusbar *m_statusBar = Gtk::manage(new Gtk::Statusbar);
+    vbox->pack_start(*m_statusBar, Gtk::PACK_SHRINK, 0);
  
     // message label display
     display = Gtk::manage(new Gtk::Label());
@@ -288,7 +306,7 @@ void Mainwin::on_view_customers_click(){
   std::string c = "-------------ALL CUSTOMERS-------------\n\n";
   for(int i=0; i<store->customers(); ++i){
     std::ostringstream oss;
-    oss << store->customer(i) << '\n' << '\n';
+    oss << store->customer(i) << '\n';
     c += oss.str();
   }
   

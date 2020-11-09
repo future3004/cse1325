@@ -12,13 +12,14 @@ class Product {
     virtual void save(std::ostream& ost);
 
     friend std::ostream& operator<<(std::ostream& ost, const Product& product);
+    double _price;
   protected:
     virtual std::string to_string() const;
   private:
     static int _nextsn;
     std::string _name;
     int _stocknum;
-    double _price;
+    //double _price;
     std::string _description;
 };
 

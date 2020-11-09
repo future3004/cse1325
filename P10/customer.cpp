@@ -11,9 +11,9 @@ Customer::Customer(std::istream& ist){
 }
 
 std::string Customer::to_string() const {
-    return "Name: " + _name + '\n'
-                 + "Phone: " + _phone + '\n'
-                 + "Email: " + _email + '\n';
+    return _name + " ("
+                 + _phone + ", "
+                 + _email + ") " + '\n';
 }
 
 void Customer::save(std::ostream& ost){
