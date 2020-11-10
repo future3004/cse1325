@@ -25,6 +25,9 @@ class Mainwin : public Gtk::Window {
     void on_about_click();
     void on_quit_click();
     
+    void on_new_order_click();
+    void on_view_orders_click();
+    
   private:
     Gtk::Label* display;
     Store* store;

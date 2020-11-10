@@ -1,30 +1,37 @@
 #include "item.h"
+#include "tool.h"
+#include "plant.h"
+#include "mulch.h"
 
-Item::Item(Product& product, int quantity): _product{new Product{product}}, _quantity{quantity} {}
+Item::Item(Product& product, int quantity): _product{&product}, _quantity{quantity} {}
 Item::Item(std::istream& ist){
- //delete _customer; _customer = nullptr;
- //_customer = new Customer{ist};
- _product = new Product(ist);
  ist >> _quantity; ist.ignore(32767, '\n');
+ std::string s;
+ std::getline(ist, s);
+ if(s == "tool"){
+  _product = new Tool(ist);
+ } 
+ else if(s == "plant"){
+   _product = new Plant(ist);
+ }
+ else if(s == "mulch"){
+  _product = new Mulch(ist);
+ }
+ else{ throw std::runtime_error{"Invalid product type on: " + s};}
+ 
 }
 
 void Item::save(std::ostream& ost){
- _product->save(ost);
  ost << _quantity << std::endl;
+ _product->save(ost);
 }
 
 double Item::subtotal(){
- double subT = (_product->_price) * _quantity;
- return subT;
-}
-
-std::string Item::to_string() const {
- //std::string output;
- return std::to_string(_quantity) + " " + '\n'; //Product::to_string()  + Product::to_string()
+ return _product->price() * static_cast<double>(_quantity);
 }
 
 std::ostream& operator<<(std::ostream& ost, const Item& item){
- ost << item.to_string();
+ ost << item._quantity << ' ' << *item._product;
  return ost;
 }
 

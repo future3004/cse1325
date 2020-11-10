@@ -74,7 +74,7 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     insertmenu->append(*insert_customer);
     
     Gtk::MenuItem *insert_order = Gtk::manage(new Gtk::MenuItem("_Order", true));
-    //insert_order->signal_activate().connect();
+    insert_order->signal_activate().connect([this] {this->on_new_order_click();});
     insertmenu->append(*insert_order);
     
     // append help to menu bar
@@ -100,7 +100,7 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     view_menu->append(*view_product);
     
     Gtk::MenuItem *view_orders = Gtk::manage(new Gtk::MenuItem("_Orders", true));
-    //view_orders->signal_activate().connect();
+    view_orders->signal_activate().connect([this] {this->on_view_orders_click();});
     view_menu->append(*view_orders);
     
     // T O O L B A R
@@ -302,6 +302,91 @@ void Mainwin::on_new_mulch_click(){
     }
  
 }
+
+void Mainwin::on_new_order_click(){
+ //set_status();
+ int ordernum;
+ std::ostringstream oss;
+    
+    // Select a customer
+    {
+      Gtk::Dialog dialog{"Order for which customer?", *this};
+    
+      Gtk::ComboBoxText cbt;
+      for(int i=0; i<store->customers(); ++i) {
+        oss.str(""); // clear the string stream
+        oss << store->customer(i);
+        cbt.append(oss.str());
+      }
+      cbt.set_active(store->customers()-1);
+      dialog.get_content_area()->add(cbt);
+    
+      dialog.add_button("Start Order", 1);
+      dialog.add_button("Cancel", 0);
+    
+      dialog.show_all();
+    
+      if(dialog.run() == 0) return; 
+      ordernum = store->add_order(store->customer(cbt.get_active_row_number()));
+      //set_status("Created order " + std::to_string(ordernum));
+    }
+    
+    // Select products
+    {
+      Gtk::MessageDialog dialog{*this, "Add to Order " + std::to_string(ordernum)};
+      
+      // Quantity (spin button)
+      Gtk::HBox qbox;
+      Gtk::Label lq{"Quantity"};
+      qbox.add(lq);
+      Gtk::SpinButton sb;
+      sb.set_range(1.0, 99.0);
+      sb.set_increments(1.0, 10.0);
+      qbox.add(sb);
+      dialog.get_content_area()->add(qbox);
+      
+      // Product (combo box text)
+      Gtk::ComboBoxText cbt;
+      for(int i=0; i<store->products(); ++i) {
+        oss.str("");
+        oss << store->product(i);
+        cbt.append(oss.str());
+      }
+      dialog.get_content_area()->add(cbt);
+
+      // Buttons
+      dialog.add_button("Add to Order", 1);    
+      dialog.add_button("Order Complete", 0);
+    
+      // Collect products
+      while(true) {
+        // Show current order
+        oss.str("");
+        oss << store->order(ordernum);
+        dialog.set_secondary_text(oss.str());
+        
+        dialog.show_all();
+    
+        if(dialog.run() == 1)
+          store->add_item(ordernum, store->product(cbt.get_active_row_number()), static_cast<int>(sb.get_value()));
+        else
+          break;
+      }
+    }
+    
+    // View the orders
+    on_view_orders_click();
+}
+
+void Mainwin::on_view_orders_click() {
+    std::ostringstream oss;
+    oss << "<tt><u>Current Orders</u>\n";
+    for(int i=0; i<store->orders(); ++i)        
+        oss << "ORDER " << i << '\n' << store->order(i) << "\n\n";
+    oss << "</tt>";
+    display->set_markup(oss.str());
+}
+
 void Mainwin::on_view_customers_click(){
   std::string c = "-------------ALL CUSTOMERS-------------\n\n";
   for(int i=0; i<store->customers(); ++i){

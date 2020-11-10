@@ -1,46 +1,37 @@
 #include "order.h"
 
-Order::Order(Customer& customer): _customer{new Customer{customer}}, _items{nullptr} {} 
+Order::Order(Customer customer): _customer{customer} {} 
 
-Order::Order(std::istream& ist) {
- delete _customer; _customer = nullptr;
- _customer = new Customer{ist};
+Order::Order(std::istream& ist): _customer{ist} {
  int _itemSize;
  ist >> _itemSize;
  ist.ignore(32767, '\n');
  
  for(int j=0; j < _itemSize; ++j){
-   _items.push_back(new Item(ist));
+   _items.push_back(Item{ist});
  }
 }
 
 void Order::save(std::ostream& ost){
- _customer->save(ost);
+ _customer.save(ost);
  ost << _items.size() << std::endl;
  for(int i = 0; i < _items.size(); ++i){
-   _items[i]->save(ost);
+   _items[i].save(ost);
  }
 }
 
-void Order::add_item(const Item& item){
- _items.push_back(new Item{item});
+void Order::add_item(Item item){
+ _items.push_back(item);
 }
 
 double Order::total() const {
- double itemsTotal = 0.0;
- for(int i = 0; i < _items.size(); ++i){
-   itemsTotal += _items[i]->subtotal();
- }
- return itemsTotal;
-}
-
-std::string Order::to_string() const {
-    double _total = total();
-    return "For Customer $" + std::to_string(_total)
-            + '\n'; //+ _customer.to_string() 
+ double sum = 0.0;
+ for(Item i : _items) sum += i.subtotal();
+ return sum;
 }
 
 std::ostream& operator<<(std::ostream& ost, const Order& order){
- ost << order.to_string();
+ ost << "For Customer " << order._customer << "  $" << order.total() << "\n";
+for(int i=0; i<order._items.size(); ++i){ ost << order._items[i] << "\n";}
  return ost;
 }

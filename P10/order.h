@@ -8,17 +8,15 @@
 
 class Order {
   public:
-   Order(Customer& customer);
+   Order(Customer customer);
    Order(std::istream& ist);
    void save(std::ostream& ost);
-   void add_item(const Item& item);
+   void add_item(Item item);
    double total() const;
    friend std::ostream& operator<<(std::ostream& ost, const Order& order);
-  protected:
-    virtual std::string to_string() const;
   private:
-   std::vector<Item*> _items;
-   Customer* _customer;
+   std::vector<Item> _items;
+   Customer _customer;
 };
 
 #endif

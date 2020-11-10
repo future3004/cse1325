@@ -29,4 +29,6 @@ void Product::save(std::ostream& ost){
   ost <<  _price << std::endl;
   ost << _description << std::endl;
 }
+
+double Product::price(){return _price;}
 int Product::_nextsn = 0;

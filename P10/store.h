@@ -17,17 +17,19 @@ class Store {
     Store(std::string name);
     Store(std::istream& ist);
     void save(std::ostream& ost);
+    std::string name();
+    
     void add_product(const Tool& product);
     void add_product(const Plant& product);
     void add_product(const Mulch& product);
     int products();
-    const Product& product(int index);
+    Product& product(int index);
     
     int customers();
     void add_customer(const Customer& customer);
     const Customer& customer(int index);
     
-    int add_order(Customer& customer);
+    int add_order(const Customer& customer);
     void add_item(int order, Product& product, int quantity);
     int orders();
     const Order& order(int index);

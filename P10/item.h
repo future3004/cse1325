@@ -11,8 +11,6 @@ class Item {
    void save(std::ostream& ost);
    double subtotal();
    friend std::ostream& operator<<(std::ostream& ost, const Item& item);
-  protected:
-    virtual std::string to_string() const;
   private:
    int _quantity;
    Product* _product;
