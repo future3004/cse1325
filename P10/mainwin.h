@@ -32,11 +32,13 @@ class Mainwin : public Gtk::Window {
     Gtk::Label* display;
     Store* store;
     std::string filename;
+    Gtk::Label* m_statusBar;
 
 
     int get_int(std::string value);
     double get_double(std::string value);
     std::string get_string(std::string value);
+    void set_status(std::string status = "");
 
     Material get_material(int val);
     Exposure get_exposure(int val);

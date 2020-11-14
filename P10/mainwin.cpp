@@ -133,6 +133,28 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     save_as_btn->signal_clicked().connect([this] {this->on_save_as_click();});
     toolbar->append(*save_as_btn);
     
+     Gtk::SeparatorToolItem *sep1 = Gtk::manage(new Gtk::SeparatorToolItem());
+    toolbar->append(*sep1);
+    
+    //     A D D   C U S T O M E R
+    // Add a New Customer button to the toolbar
+    Gtk::Image* customer_image = Gtk::manage(new Gtk::Image{"new_customer.png"});
+    Gtk::ToolButton* new_cust_button = Gtk::manage(new Gtk::ToolButton(*customer_image));
+    new_cust_button->set_tooltip_markup("Add a New Customer");
+    new_cust_button->signal_clicked().connect([this] {this->on_new_customer_click();});
+    toolbar->append(*new_cust_button);
+    
+    //     A D D   O R D E R
+    // Add a New Order button to the toolbar
+    Gtk::Image* order_image = Gtk::manage(new Gtk::Image{"new_order.png"});
+    Gtk::ToolButton* new_order_button = Gtk::manage(new Gtk::ToolButton(*order_image));
+    new_order_button->set_tooltip_markup("Add a New Order");
+    new_order_button->signal_clicked().connect([this] {this->on_new_order_click();});
+    toolbar->append(*new_order_button);
+
+    Gtk::SeparatorToolItem *sep2 = Gtk::manage(new Gtk::SeparatorToolItem());
+    toolbar->append(*sep2);
+    
     // tool to toolbar
     Gtk::Image *tool_image = Gtk::manage(new Gtk::Image{"tool.png"});
     Gtk::ToolButton *tool_btn = Gtk::manage(new Gtk::ToolButton(*tool_image));
@@ -147,9 +169,46 @@ Mainwin::Mainwin(): store{nullptr}, filename{"untitled.manga"}  {
     plant_btn->signal_clicked().connect([this] {this->on_new_plant_click();});
     toolbar->append(*plant_btn);
     
+     //     A D D   M U L C H
+    // Add a New Mulch button to the toolbar
+    Gtk::Image* mulch_image = Gtk::manage(new Gtk::Image{"new_mulch.png"});
+    Gtk::ToolButton* new_mulch_button = Gtk::manage(new Gtk::ToolButton(*mulch_image));
+    new_mulch_button->set_tooltip_markup("Create mulch");
+    new_mulch_button->signal_clicked().connect([this] {this->on_new_mulch_click();});
+    toolbar->append(*new_mulch_button);
+    
+    Gtk::SeparatorToolItem *sep3 = Gtk::manage(new Gtk::SeparatorToolItem());
+    toolbar->append(*sep3);
+    
+    //     V I E W   C U S T O M E R S
+    // Add a View Customers button to the toolbar
+    Gtk::Image* view_customers_image = Gtk::manage(new Gtk::Image{"view_customers.png"});
+    Gtk::ToolButton* view_customers_button = Gtk::manage(new Gtk::ToolButton(*view_customers_image));
+    view_customers_button->set_tooltip_markup("View All Customers");
+    view_customers_button->signal_clicked().connect([this] {this->on_view_customers_click();});
+    toolbar->append(*view_customers_button);
+    
+    //     V I E W   O R D E R S
+    // Add a View Orders button to the toolbar
+    Gtk::Image* view_orders_image = Gtk::manage(new Gtk::Image{"view_orders.png"});
+    Gtk::ToolButton* view_orders_button = Gtk::manage(new Gtk::ToolButton(*view_orders_image));
+    view_orders_button->set_tooltip_markup("View All Orders");
+    view_orders_button->signal_clicked().connect([this] {this->on_view_orders_click();});
+    toolbar->append(*view_orders_button);
+    
+    //     V I E W   P R O D U C T S
+    // Add a View Products button to the toolbar
+    Gtk::Image* view_products_image = Gtk::manage(new Gtk::Image{"view_products.png"});
+    Gtk::ToolButton* view_products_button = Gtk::manage(new Gtk::ToolButton(*view_products_image));
+    view_products_button->set_tooltip_markup("View All Products");
+    view_products_button->signal_clicked().connect([this] {this->on_view_products_click();});
+    toolbar->append(*view_products_button);
+    
     // status bar
-    Gtk::Statusbar *m_statusBar = Gtk::manage(new Gtk::Statusbar);
+    m_statusBar = Gtk::manage(new Gtk::Label());
+    m_statusBar->set_hexpand(true);
     vbox->pack_start(*m_statusBar, Gtk::PACK_SHRINK, 0);
+    //vbox->add(*m_statusBar);
  
     // message label display
     display = Gtk::manage(new Gtk::Label());
@@ -183,6 +242,7 @@ void Mainwin::on_new_store_click(bool untitled){
     }
     delete store; store = nullptr;
     store = new Store{name};
+    set_status("Created new store: " + name);
     on_view_products_click();
   
 } 
@@ -234,6 +294,7 @@ void Mainwin::on_new_customer_click(){
       email = email_entry.get_text();
       
       store->add_customer(*(new Customer{name, phone, email}));
+      set_status("Added customer " + name);
     }
 }
 
@@ -248,6 +309,7 @@ void Mainwin::on_new_tool_click(){
         price = get_double("Price?");
         description = get_string("Description?");
         store->add_product(*(new Tool{name, price, description}));
+        set_status("Added tool " + name);
         on_view_products_click();
     } catch(std::exception& e) {
     }
@@ -272,6 +334,7 @@ void Mainwin::on_new_plant_click(){
         double d = get_double("Exposure? (1) Shade (2) Part Sun (3) Sun");
         exposure = (d==1.0) ? Exposure::SHADE : ((d==3.0) ? Exposure::SUN : Exposure::PARTSUN);
         store->add_product(*(new Plant{name, price, description, species, exposure}));
+        set_status("Added plant " + name);
         on_view_products_click();
     } catch(std::exception& e) {
     }
@@ -296,6 +359,7 @@ void Mainwin::on_new_mulch_click(){
         //add mulch to store
         Mulch mulch{name, price, description, volume, material};
         store->add_product(mulch);
+        set_status("Added mulch " + name);
         on_view_products_click();
     } catch(std::exception& e) {
       std::cerr << e.what();
@@ -328,7 +392,7 @@ void Mainwin::on_new_order_click(){
     
       if(dialog.run() == 0) return; 
       ordernum = store->add_order(store->customer(cbt.get_active_row_number()));
-      //set_status("Created order " + std::to_string(ordernum));
+      set_status("Created order " + std::to_string(ordernum));
     }
     
     // Select products
@@ -465,6 +529,7 @@ void Mainwin::on_save_click(){
         std::ofstream ofs{filename};
         store->save(ofs);
         if(!ofs) throw std::runtime_error{"Error writing file " + filename};
+        set_status("Saved to " + filename);
     } 
     catch(std::exception& e) {
         Gtk::MessageDialog{*this, "Unable to save store: " + std::string{e.what()},
@@ -539,6 +604,7 @@ void Mainwin::on_open_click(){
             on_new_store_click(true);
         }
     }
+    set_status("Opened " + filename);
 }
 
 void Mainwin::on_about_click(){
@@ -555,11 +621,20 @@ void Mainwin::on_about_click(){
     dialog.set_authors(authors);
     std::vector< Glib::ustring > artists = {
         "Logo by PIXXY, https://creativecommons.org/licenses/by-nc-nd/4.0/",
-        "Logo, licensed for personal and commercial purposes with attribution https://pixy.org/1131433/"};
+        "Logo, licensed for personal and commercial purposes with attribution https://pixy.org/1131433/",
+        "Shopping Cart icon by Simon Child from the Noun Project, CC BY 3.0",
+        "Customers icon by JuliAya from the Noun Project, CC BY 3.0",
+        "Sales Order icon by Sophia Bai from the Noun Project, CC BY 3.0",
+        "Growing Plants icon by Adam Beasley from the Noun Project, CC BY 3.0",
+        "Authors at FlatIcon.com"
+        };
     dialog.set_artists(artists);
     dialog.run();
 }
 
+void Mainwin::set_status(std::string status) {
+    m_statusBar->set_markup(status);
+}
 
 
 
