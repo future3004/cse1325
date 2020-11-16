@@ -1,5 +1,6 @@
 #include "store.h"
 #include <iostream>
+#include <algorithm>
 
 Store::Store(std::string name) : _name{name} { }
 Store::Store(std::istream& ist){
@@ -34,6 +35,8 @@ Store::Store(std::istream& ist){
    _customers.push_back(new Customer(ist));
  }
  
+ //std::sort(_customers.begin(), _customers.end());
+ 
  ist >> _size; ist.ignore(32767, '\n');
  if(ist.eof()) return;
  while(_size-- > 0){
@@ -45,11 +48,17 @@ Store::Store(std::istream& ist){
 void Store::add_product(const Tool& product) {_products.push_back(new Tool{product});}
 void Store::add_product(const Plant& product) {_products.push_back(new Plant{product});}
 void Store::add_product(const Mulch& product) {_products.push_back(new Mulch{product});}
-void Store::add_customer(const Customer& customer) {_customers.push_back(new Customer{customer});}
+void Store::add_customer(const Customer& customer) {
+ _customers.push_back(new Customer{customer});
+ std::sort(_customers.begin(), _customers.end());
+ }
 int Store::products() {return _products.size();}
 int Store::customers(){return _customers.size();}
 Product& Store::product(int index) {return *_products.at(index);}
-const Customer& Store::customer(int index) {return *_customers.at(index);}
+const Customer& Store::customer(int index) {
+ std::sort(_customers.begin(), _customers.end());
+ return *_customers.at(index);
+}
 
 int Store::add_order(const Customer& customer){
  _orders.push_back(new Order{customer});
@@ -70,6 +79,7 @@ void Store::save(std::ostream& ost){
    //(_products.at(i))->save(ost);
  }
  
+ std::sort(_customers.begin(), _customers.end());
  ost << _customers.size() << std::endl;
  for(int i = 0; i < _customers.size(); ++i){
    _customers[i]->save(ost);

@@ -33,11 +33,20 @@ class Store {
     void add_item(int order, Product& product, int quantity);
     int orders();
     const Order& order(int index);
+    std::vector<Order*>::iterator iterator;
+    std::vector<Order*>::const_iterator const_iterator;
+    //typedef Orders::iterator iterator;
+    //typedef Orders::const_iterator const_iterator;
+    //iterator begin() {return _orders.at(0);}
+    //iterator end() {return _orders.at(_orders.size());}
+
   private:
     std::string _name;
     std::vector<Product*> _products;
     std::vector<Customer*> _customers;
     std::vector<Order*> _orders;
+    //typedef std::vector<Order*> Orders;
+    //Orders orderz;
     
 };
 
