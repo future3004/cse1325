@@ -4,6 +4,8 @@ const int MAX_COLOR = 255;
 
 Mandelbrot::Mandelbrot(int width, int height, int icount, int nthreads) 
   : _width{width}, _height{height}, _icount{icount} {
+    // couldn't figure out how to add threads :(
+    // my virtual machine couldn't work anymore
 
     // Allocate memory for the results
     _values = new int[_width * _height];

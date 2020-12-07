@@ -1,5 +1,5 @@
 QUESTION 1: Which values of width, height, and icount did you select for your machine to generate a Mandelbrot image with 1 thread with around a 30 second runtime: 
-
+  width: 1300  height: 1300  icount: 500  threads: 1
 
 QUESTION 2: Provide the output of ``time ./mandelbrot `` *width height icount nthreads* for runs with 1 through 16 threads below. You can run all of these with a single bash command if you like: ``for i in {1..16} ; do time ./mandelbrot 2000 2000 500 $i ; done``
 
@@ -20,10 +20,11 @@ YOUR Timing:
 
 QUESTION 3: Does adding more threads continue to speed up the program? Do more threads ever slow down the program slightly?  Why or why not?
 
-
+ Adding more threads definitely speeds up the program. No more threads don;t slow down program when implemented correctly.
 
 
 QUESTION 4: Does adding more threads increase the "system load", or is it constant regardless of the number of threads?  Why?
+  Yes more threads increase the system load.
 
 
 

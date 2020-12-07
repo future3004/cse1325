@@ -14,7 +14,8 @@ class Mandelbrot {
   protected:
     void calculate_point (int x, int y);
     void calculate_rows (int y1, int y2);
-    
+    //void my_func (int threads);
+
   private:
     int _width;    // image x size (adjust for runtime)
     int _height;   // image y size (adjust for runtime)
